@@ -1,0 +1,50 @@
+* Table of Contents                                                :TOC_3_gh:
+- [[#about-pumopm][About PumoPM]]
+  - [[#built-with][Built with]]
+  - [[#what-does-pumo-mean][What does Pumo mean?]]
+- [[#getting-started][Getting started]]
+- [[#usage][Usage]]
+- [[#roadmap][Roadmap]]
+- [[#contributing][Contributing]]
+- [[#license][License]]
+
+* About PumoPM
+  The Pumo Power  Manager (PumoPM for short)  is a custom power  manager I wrote
+  for myself in order  to have a lightweight one that does  exactly what I want,
+  how I  want. Basically: I  want to be  informed of a  low level of  battery (I
+  consider 25% to be low, hence the defaults), very low (again, my preference is
+  at 15%), and then at critical level (10%) I want the computer to automatically
+  sleep, and if it stays asleep for a certain duration it will be suspended.
+
+  This project is written for a GNU/Linux operating system running with systemd.
+  I have  currently no plan  on making it  available on other  platforms, except
+  maybe one day with [[https://guix.gnu.org/][Guix]] (if you don’t value your time, take a look at it, it’s
+  an awesome operating system, much better than NixOS in my opinion).
+
+** Built with
+   [[http://spacemacs.org][file:https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg]]
+
+   PumoPM is  written in pure,  stable Rust (at least  >= 1.45.2). Its  only two
+   dependencies are the crates [[https://github.com/svartalf/rust-battery][battery]] and [[https://github.com/hoodie/notify-rust][notify-rust]].
+
+** What does Pumo mean?
+   It’s my cat’s name.
+
+* Getting started
+  To run the project, you currently only have one option: download the project’s
+  source code,  compile it, and  run it. You will  need to have  [[https://www.rust-lang.org/][Rust installed]].
+  Update your  Rust installation  if needed with  ~rustup update~.  Then, simply
+  begin with a ~git clone~, then cd into the project’s directory. You can then
+  build the project with ~cargo~, and even install it locally if you want to.
+  #+BEGIN_SRC sh
+    $ git clone https://labs.phundrak.com/phundrak/pumopm
+    $ cd pumopm
+    $ cargo build --release
+    $ cargo run --release # to run the project
+    $ cargo install # optional, to install for the user the project
+  #+END_SRC
+
+* Usage
+* Roadmap
+* Contributing
+* License
