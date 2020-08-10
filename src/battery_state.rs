@@ -29,8 +29,8 @@ pub const DEFAULT_REFRESH: u64 = 5;
 impl BatteryState {
     pub fn new(
         low_level: f32,
-        very_low_level: f32,
-        critical_level: f32,
+        mut very_low_level: f32,
+        mut critical_level: f32,
         refresh_rate: u64,
         verbosity: VerbosityLevel,
     ) -> battery::Result<Self> {
@@ -46,6 +46,14 @@ impl BatteryState {
                 use std::io;
                 return Err(io::Error::from(io::ErrorKind::NotFound).into());
             }
+        };
+
+        let low_level = low_level.min(50_f32).max(5_f32);
+        if very_low_level > low_level {
+             very_low_level = f32::max(low_level - 1_f32, 5_f32)
+        };
+        if critical_level > very_low_level {
+            critical_level = f32::max(very_low_level - 1_f32, 5_f32)
         };
 
         Ok(Self {
