@@ -1,27 +1,38 @@
 use notify_rust::{Hint, Notification, Urgency};
 
+pub enum VerbosityLevel {
+    None = 0,
+    Some = 1,
+    Lots = 2,
+}
+
 pub struct BatteryState {
     manager: battery::Manager,
     battery: battery::Battery,
+    refresh_rate: u64,
+
     low_level: f32,
     very_low_level: f32,
     critical_level: f32,
-    refresh_rate: u8,
-    pub is_triggered_low: bool,
-    pub is_triggered_very_low: bool,
+
+    is_triggered_low: bool,
+    is_triggered_very_low: bool,
+
+    verbosity: VerbosityLevel,
 }
 
 pub const DEFAULT_LOW: f32 = 25_f32;
 pub const DEFAULT_VERY_LOW: f32 = 15_f32;
 pub const DEFAULT_CRITICAL: f32 = 10_f32;
-pub const DEFAULT_REFRESH: u8 = 5_u8;
+pub const DEFAULT_REFRESH: u64 = 5;
 
 impl BatteryState {
     pub fn new(
         low_level: f32,
         very_low_level: f32,
         critical_level: f32,
-        refresh_rate: u8,
+        refresh_rate: u64,
+        verbosity: VerbosityLevel,
     ) -> battery::Result<Self> {
         let manager = battery::Manager::new().unwrap();
         let battery = match manager.batteries().unwrap().next() {
@@ -40,12 +51,16 @@ impl BatteryState {
         Ok(Self {
             manager,
             battery,
+            refresh_rate,
+
             low_level,
             very_low_level,
             critical_level,
-            refresh_rate,
+
             is_triggered_low: false,
             is_triggered_very_low: false,
+
+            verbosity,
         })
     }
 
@@ -111,6 +126,9 @@ impl BatteryState {
             },
             _ => self.reset_levels(),
         }
+
+        use std::{thread, time::Duration};
+        thread::sleep(Duration::from_secs(self.refresh_rate));
     }
 }
 
@@ -121,6 +139,7 @@ impl Default for BatteryState {
             DEFAULT_VERY_LOW,
             DEFAULT_CRITICAL,
             DEFAULT_REFRESH,
+            VerbosityLevel::None,
         )
         .unwrap()
     }

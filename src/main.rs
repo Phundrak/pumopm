@@ -1,82 +1,56 @@
 mod battery_state;
 
-const VERSION: Option<&'static str> = option_env!("CARGO_PKG_VERSION");
-const AUTHORS: Option<&'static str> = option_env!("CARGO_PKG_AUTHORS");
+// use battery_state::*;
+use battery_state::{BatteryState, VerbosityLevel};
+use clap::Clap;
 
-use clap::{App, Arg};
-use std::{thread, time::Duration};
+#[derive(Clap)]
+#[clap(
+    version = "0.1.0",
+    author = "Lucien Cartier-Tilet <lucien@phundrak.com>"
+)]
+struct Opts {
+    #[clap(short, long, default_value = "25")]
+    low: f32,
 
-macro_rules! get_arg_value {
-    ($args:ident, $arg:literal, $type:ty, $default:ident) => {
-        match $args.value_of($arg) {
-            Some(value) => match value.parse::<$type>() {
-                Ok(ret) => ret,
-                Err(e) => {
-                    eprintln!(
-                        "Error parsing {}, using default. Error: {}",
-                        value, e
-                    );
-                    $default
-                }
-            },
-            None => $default,
-        }
-    };
+    #[clap(short = "L", long, default_value = "15")]
+    very_low: f32,
+
+    #[clap(short, long, default_value = "10")]
+    critical: f32,
+
+    #[clap(short, long = "refresh-rate", default_value = "5")]
+    refresh_rate: u64,
+
+    #[clap(short, long, parse(from_occurrences))]
+    verbose: i32,
 }
 
 fn main() {
-    let arguments = App::new("PumoPM")
-        .version(VERSION.unwrap_or("unknown"))
-        .author(AUTHORS.unwrap_or("Lucien Cartier-Tilet <lucien@phundrak.com>"))
-        .about("Tiny custom power manager")
-        .arg(Arg::with_name("low-battery")
-             .short("l")
-             .long("low")
-             .value_name("LOW")
-             .help("Level at which the battery’s level is considered low")
-             .takes_value(true))
-        .arg(Arg::with_name("very-low-battery")
-             .short("L")
-             .long("very-low")
-             .value_name("VERY LOW")
-             .help("Level at which the battery’s level is considered very low")
-             .takes_value(true))
-        .arg(Arg::with_name("critical-battery")
-             .short("c")
-             .long("critical")
-             .value_name("CRITICAL")
-             .help("Level at which the battery’s level is considered critical")
-             .takes_value(true))
-        .arg(Arg::with_name("refresh-rate")
-             .short("r")
-             .long("refresh-rate")
-             .value_name("REFRESH RATE")
-             .help("How often should the battery’s levels be read (in seconds)")
-             .takes_value(true))
-        .get_matches();
+    let opts: Opts = Opts::parse();
+    println!("Low battery: {}%", opts.low);
+    println!("Very low battery: {}%", opts.very_low);
+    println!("Critical battery: {}%", opts.critical);
+    println!("Refresh rate: {}s", opts.refresh_rate);
+    match opts.verbose {
+        0 => println!("No verbose info"),
+        1 => println!("Some verbose info"),
+        _ => println!("Lots of verbose info"),
+    }
 
-    use battery_state::{
-        DEFAULT_CRITICAL, DEFAULT_LOW, DEFAULT_REFRESH, DEFAULT_VERY_LOW,
-    };
-    let low_battery =
-        get_arg_value!(arguments, "low-battery", f32, DEFAULT_LOW);
-    let very_low_battery =
-        get_arg_value!(arguments, "very-low-battery", f32, DEFAULT_VERY_LOW);
-    let critical_battery =
-        get_arg_value!(arguments, "critical-battery", f32, DEFAULT_CRITICAL);
-    let refresh_rate =
-        get_arg_value!(arguments, "refresh-rate", u8, DEFAULT_REFRESH);
-
-    // let mut battery = battery_state::BatteryState::new(low_battery);
-    let mut battery = battery_state::BatteryState::new(
-        low_battery,
-        very_low_battery,
-        critical_battery,
-        refresh_rate,
+    let mut battery = BatteryState::new(
+        opts.low,
+        opts.very_low,
+        opts.critical,
+        opts.refresh_rate,
+        match opts.verbose {
+            0 => VerbosityLevel::None,
+            1 => VerbosityLevel::Some,
+            _ => VerbosityLevel::Lots,
+        },
     )
     .unwrap();
     loop {
-        thread::sleep(Duration::from_secs(5));
         battery.update();
     }
 }
