@@ -73,7 +73,7 @@
   - [ ] close the program with the exit code ~0~
 
 * License
-  This project is under the GPL-3.0 or later license. You can read it here, but
+  This project is under the GPL-3.0 or later license. You can read it [[file:LICENSE][here]], but
   basically, the following are allowed:
   - Commercial use of this program and its source code
   - Modification of the program and the source code
