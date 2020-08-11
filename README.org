@@ -30,7 +30,7 @@
   To run the project, you currently only have one option: download the project’s
   source code,  compile it, and  run it. You will  need to have  [[https://www.rust-lang.org/][Rust installed]].
   Update your  Rust installation  if needed with  ~rustup update~.  Then, simply
-  begin with a ~git clone~, then cd into the project’s directory. You can then
+  begin with a ~git  clone~, then cd into the project’s  directory. You can then
   build the project with ~cargo~, and even install it locally if you want to.
   #+BEGIN_SRC sh
     $ git clone https://labs.phundrak.com/phundrak/pumopm
@@ -39,6 +39,16 @@
     $ cargo run --release # to run the project
     $ cargo install --path . # optional, to install for the user the project
   #+END_SRC
+
+  If you are an Arch Linux user, make sure you have ~rustup~ installed, and then
+  you can install PumoPM using the ~PKGBUILD~ available in the repository. To do
+  so, simply run
+  #+BEGIN_SRC sh
+    $ makepkg -si
+  #+END_SRC
+
+  You will then have PumoPM installed as  a native package on your machine which
+  you can uninstall using Pacman.
 
 * Usage
   It is possible to run PumoPM with a couple of different flags. You will find
@@ -50,9 +60,9 @@
   - ~-c --critical~ :: level at which the battery is considered to be critical
   - ~-r --refresh-rate~ :: refresh rate of the battery’s reads
   - ~-v --verbose~ :: augment the program’s verbosity, can be repeated
-  The arguments ~-l~, ~-L~ and ~-c~ accept an integer between 5 and 75 (actually
+  The arguments ~-l~, ~-L~ and ~-c~ accept an integer between 5 and 95 (actually
   any value that will fit in an unsigned byte, but it will be rounded up to 5 or
-  down to 75), while ~-r~ accepts any  integer that can fit in a ~u64~, although
+  down to 95), while ~-r~ accepts any  integer that can fit in a ~u64~, although
   I’m sure you’ll never need that long of a refresh time.
 
   The levels  will also see  their values ordered. If  the ~-L~ value  is higher
