@@ -1,13 +1,3 @@
-* Table of Contents                                                :TOC_3_gh:
-- [[#about-pumopm][About PumoPM]]
-  - [[#built-with][Built with]]
-  - [[#what-does-pumo-mean][What does Pumo mean?]]
-- [[#getting-started][Getting started]]
-- [[#usage][Usage]]
-- [[#roadmap][Roadmap]]
-- [[#contributing][Contributing]]
-- [[#license][License]]
-
 * About PumoPM
   The Pumo Power  Manager (PumoPM for short)  is a custom power  manager I wrote
   for myself in order  to have a lightweight one that does  exactly what I want,
@@ -24,11 +14,17 @@
 ** Built with
    [[http://spacemacs.org][file:https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg]]
 
-   PumoPM is  written in pure,  stable Rust (at least  >= 1.45.2). Its  only two
-   dependencies are the crates [[https://github.com/svartalf/rust-battery][battery]] and [[https://github.com/hoodie/notify-rust][notify-rust]].
+   PumoPM  is written  in pure,  stable  Rust (at  least >=  1.45.2). Its  three
+   dependencies are the crates [[https://github.com/svartalf/rust-battery][battery]], [[https://clap.rs/][clap]], and [[https://github.com/hoodie/notify-rust][notify-rust]].
 
 ** What does Pumo mean?
    It’s my cat’s name.
+
+** Why is the main branch called ~senpai~?
+   This is a joke that originated from [[https://www.reddit.com/r/ProgrammerAnimemes/][r/ProgrammerAnimemes]] when news were about
+   defaulting to  another name than ~master~  for git’s main branch.  As a joke,
+   someone proposed ~senpai~  on this reddit as an alternative  to ~master~, and
+   here we are. This is a weeb’s joke.
 
 * Getting started
   To run the project, you currently only have one option: download the project’s
@@ -45,6 +41,50 @@
   #+END_SRC
 
 * Usage
-* Roadmap
-* Contributing
+  It is possible to run PumoPM with a couple of different flags. You will find
+  their description here:
+  - ~-h --help~ :: displays a help message
+  - ~-V --version~ :: displays the program’s version
+  - ~-l --low~ :: level at which the battery is considered to be low
+  - ~-L --very-low~ :: level at which the battery is considered to be very low
+  - ~-c --critical~ :: level at which the battery is considered to be critical
+  - ~-r --refresh-rate~ :: refresh rate of the battery’s reads
+  - ~-v --verbose~ :: augment the program’s verbosity, can be repeated
+  The arguments ~-l~, ~-L~ and ~-c~ accept an integer between 5 and 75 (actually
+  any value that will fit in an unsigned byte, but it will be rounded up to 5 or
+  down to 75), while ~-r~ accepts any  integer that can fit in a ~u64~, although
+  I’m sure you’ll never need that long of a refresh time.
+
+  The levels  will also see  their values ordered. If  the ~-L~ value  is higher
+  than ~-l~, then the program will automatically set it to one percent lower, or
+  to 5% (whichever is  higher). Same goes for the value of ~-c~  if it goes over
+  the ~-L~ value, including after the re-evaluation of the latter’s value. For
+  instance, calling the program like so
+  #+BEGIN_SRC sh
+    $ pumopm -l 30 -L 32 -c 30
+  #+END_SRC
+  is the same as calling it like so
+  #+BEGIN_SRC sh
+    $ pumopm -l 30 -L 29 -c 28
+  #+END_SRC
+
+* TODO Roadmap [0/2]
+  - [ ] system tray
+  - [ ] close the program with the exit code ~0~
+
 * License
+  This project is under the GPL-3.0 or later license. You can read it here, but
+  basically, the following are allowed:
+  - Commercial use of this program and its source code
+  - Modification of the program and the source code
+  - Distribution of the program and the source code
+  - Patent use of the program and the source code
+  - Private use of the program and the source code
+  However, this program comes  with no warranty and I am  under no liability for
+  what you do with it. The conditions of using this program are:
+  - Notice your users of the license and copyright
+  - State any changes in the code
+  - Disclose the source code
+  - Use the same license
+  Please note that I  am no lawyer, and the only legal document  you can read is
+  the one linked above.
