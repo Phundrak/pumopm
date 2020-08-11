@@ -37,7 +37,7 @@
     $ cd pumopm
     $ cargo build --release
     $ cargo run --release # to run the project
-    $ cargo install # optional, to install for the user the project
+    $ cargo install --path . # optional, to install for the user the project
   #+END_SRC
 
 * Usage
