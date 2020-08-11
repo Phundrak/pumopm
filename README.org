@@ -14,8 +14,8 @@
 ** Built with
    [[http://spacemacs.org][file:https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg]]
 
-   PumoPM  is written  in  pure, stable  Rust  (at least  >=  1.45.2). Its  four
-   dependencies are the crates [[https://github.com/svartalf/rust-battery][battery]], [[https://clap.rs/][clap]], [[https://crates.io/crates/time][time]], and [[https://github.com/hoodie/notify-rust][notify-rust]].
+   PumoPM  is written  in pure,  stable  Rust (at  least >=  1.45.2). Its  three
+   dependencies are the crates [[https://github.com/svartalf/rust-battery][battery]], [[https://clap.rs/][clap]], and [[https://github.com/hoodie/notify-rust][notify-rust]].
 
 ** What does Pumo mean?
    It’s my cat’s name.

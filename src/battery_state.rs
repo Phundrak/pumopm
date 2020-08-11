@@ -129,13 +129,10 @@ impl BatteryState {
         match time {
             Some(e) => {
                 let time = e.value as u64;
-                let time = time::Time::try_from_hms(
-                    (time / 3600) as u8,
-                    ((time % 3600) / 60) as u8,
-                    (time % 60) as u8,
-                )
-                .unwrap();
-                time.to_string()
+                let hours = time / 3600;
+                let minutes = (time % 3600) / 60;
+                let seconds = time % 60;
+                format!("{:01}:{:02}:{:02}", hours, minutes, seconds)
             }
             None => {
                 eprintln!("Couldn’t read remaining time");
