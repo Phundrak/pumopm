@@ -11,13 +11,13 @@ use clap::Clap;
 )]
 struct Opts {
     #[clap(short, long, default_value = "25")]
-    low: f32,
+    low: u8,
 
     #[clap(short = "L", long, default_value = "15")]
-    very_low: f32,
+    very_low: u8,
 
     #[clap(short, long, default_value = "10")]
-    critical: f32,
+    critical: u8,
 
     #[clap(short, long = "refresh-rate", default_value = "5")]
     refresh_rate: u64,
@@ -28,15 +28,6 @@ struct Opts {
 
 fn main() {
     let opts: Opts = Opts::parse();
-    println!("Low battery: {}%", opts.low);
-    println!("Very low battery: {}%", opts.very_low);
-    println!("Critical battery: {}%", opts.critical);
-    println!("Refresh rate: {}s", opts.refresh_rate);
-    match opts.verbose {
-        0 => println!("No verbose info"),
-        1 => println!("Some verbose info"),
-        _ => println!("Lots of verbose info"),
-    }
 
     let mut battery = BatteryState::new(
         opts.low,
