@@ -1,6 +1,6 @@
 # Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
 pkgname=pumopm
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="A tiny power manager written in Rust"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
