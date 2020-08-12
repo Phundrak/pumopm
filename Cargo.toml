@@ -1,6 +1,6 @@
 [package]
 name = "pumopm"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Lucien Cartier-Tilet <lucien@phundrak.com>"]
 edition = "2018"
 description = "Simple power manager for systemd-based Linux"
