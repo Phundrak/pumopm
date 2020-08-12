@@ -37,10 +37,13 @@ macro_rules! trigger_warning {
         }
         $trigger = true;
         let level = ($battery.state_of_charge().value * 100_f32) as u8;
-        let message = format!($message, $self.remaining_time($self.battery.time_to_full()), level);
-        match $verbosity {
-            VerbosityLevel::None => {}
-            _ => println!("{}", message),
+        let message = format!(
+            $message,
+            $self.remaining_time($self.battery.time_to_full()),
+            level
+        );
+        if $verbosity >= VerbosityLevel::Some {
+            println!("{}", message);
         }
         Notification::new()
             .summary("Low battery")
@@ -61,8 +64,8 @@ impl BatteryState {
         refresh_rate: u64,
         verbosity: VerbosityLevel,
     ) -> battery::Result<Self> {
-        let manager = battery::Manager::new().unwrap();
-        let battery = match manager.batteries().unwrap().next() {
+        let manager = battery::Manager::new()?;
+        let battery = match manager.batteries()?.next() {
             Some(Ok(battery)) => battery,
             Some(Err(e)) => {
                 eprintln!("An error occured: {}", e);
@@ -84,18 +87,17 @@ impl BatteryState {
             critical_level = u8::max(very_low_level - 1_u8, 5_u8)
         };
 
-        match verbosity {
-            VerbosityLevel::None => {}
-            _ => {
-                println!("Low battery: {}%", low_level);
-                println!("Very low battery: {}%", very_low_level);
-                println!("Critical battery: {}%", critical_level);
-                println!("Refresh rate: {}s", refresh_rate);
-                match verbosity {
-                    VerbosityLevel::Some => println!("Some verbose info"),
-                    _ => println!("Lots of verbose info"),
-                }
-            }
+        if verbosity == VerbosityLevel::Some {
+            println!("Some verbose info");
+        }
+        if verbosity >= VerbosityLevel::Some {
+            println!("Low battery: {}%", low_level);
+            println!("Very low battery: {}%", very_low_level);
+            println!("Critical battery: {}%", critical_level);
+            println!("Refresh rate: {}s", refresh_rate);
+        }
+        if verbosity >= VerbosityLevel::Lots {
+            println!("Lots of verbose info")
         }
 
         Ok(Self {
@@ -126,18 +128,14 @@ impl BatteryState {
     }
 
     pub fn remaining_time(&self, time: Option<battery::units::Time>) -> String {
-        match time {
-            Some(e) => {
-                let time = e.value as u64;
-                let hours = time / 3600;
-                let minutes = (time % 3600) / 60;
-                let seconds = time % 60;
-                format!("{:01}:{:02}:{:02}", hours, minutes, seconds)
-            }
-            None => {
-                eprintln!("Couldn’t read remaining time");
-                String::from("unknown remaining time")
-            }
+        if let Some(e) = time {
+            let time = e.value as u64;
+            let hours = time / 3600;
+            let minutes = (time % 3600) / 60;
+            let seconds = time % 60;
+            format!("{:01}:{:02}:{:02}", hours, minutes, seconds)
+        } else {
+            "unknown remaining time".to_owned()
         }
     }
 
@@ -216,7 +214,7 @@ impl BatteryState {
                 _ => eprintln!("Error: unknown battery state"),
             }
         }
-        if self.verbosity == VerbosityLevel::Lots {
+        if self.verbosity >= VerbosityLevel::Lots {
             eprintln!("====\nDebug self:\n{:?}\n====", self);
         }
 
