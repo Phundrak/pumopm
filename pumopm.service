@@ -3,7 +3,7 @@ Description=A small, simple, no bloat power manager.
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/pumo
+ExecStart=/usr/bin/pumopm
 Restart=on-failure
 
 # Disalow writing to /usr, /bin, /usr/bin... It shouldn’t, but just in case
