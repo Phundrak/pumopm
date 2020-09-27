@@ -1,7 +1,7 @@
 # Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
 pkgname=pumopm-git
 pkgver=0.1.1.r1.g4fd33bf
-pkgrel=3
+pkgrel=1
 pkgdesc="A tiny power manager written in Rust"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://labs.phundrak.com/phundrak/pumopm"
@@ -9,11 +9,11 @@ license=('GPL3')
 depends=()
 makedepends=('rustup' 'git')
 options=('strip' 'zipman')
-source=("$pkgname::git+https://labs.phundrak.com/phundrak/pumopm.git#branch=develop")
+source=("$pkgname::git+https://labs.phundrak.com/phundrak/pumopm.git")
 md5sums=('SKIP')
 # If Phundrak’s Gitea takes too long to answer, or if it is down, use the
 # Github mirror
-# source=("$pkgname}::git+https://github.com/Phundrak/pumopm.git#branch=develop")
+# source=("$pkgname}::git+https://github.com/Phundrak/pumopm.git")
 
 pkgver() {
 	cd "$pkgname"
