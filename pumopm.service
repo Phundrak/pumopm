@@ -1,0 +1,17 @@
+[Unit]
+Description=A small, simple, no bloat power manager.
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/pumo
+Restart=on-failure
+
+# Disalow writing to /usr, /bin, /usr/bin... It shouldn’t, but just in case
+ProtectSystem=yes
+# I swear I’m not paranoid about my own program
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+
+[Install]
+WantedBy=default.target

@@ -1,14 +1,14 @@
 # Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
 pkgname=pumopm
 pkgver=0.1.1
-pkgrel=2
+pkgrel=3
 pkgdesc="A tiny power manager written in Rust"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://labs.phundrak.com/phundrak/pumopm"
 license=('GPL3')
 depends=()
 makedepends=('rustup' 'git')
-options=()
+options=('strip' 'zipman')
 source=("$pkgname::https://labs.phundrak.com/phundrak/pumopm/archive/$pkgver.tar.gz")
 md5sums=('347a95efacdbf9f8ab3b2da6a7eff6cc')
 
@@ -25,9 +25,14 @@ build() {
 
 package() {
   cd "$pkgname"
-
+  echo EXE
   install -Dm755 "target/release/pumopm" "$pkgdir/usr/bin/pumopm"
+  echo LICENSE
   install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/${pkgname}/LICENSE"
+  echo MAN
+  install -Dm644 "pumopm.1" "$pkgdir/usr/share/man/man1/pumopm.1"
+  echo SERVCE
+  install -Dm644 "pumopm.service" "$pkgdir/usr/lib/systemd/system/pumopm.service"
 }
 
 # vim:set ts=2 sw=2 et:

@@ -1,0 +1,49 @@
+\" -*- mode: nroff; -*-
+.TH PUMOPM 1 pumopm
+.SH NAME
+pumopm \- simple, small, no bloat power manager
+.SH SYNOPSIS
+.B pumopm
+.RB [-h\ --help]
+.RB [-V\ --version]
+.RB [-l\ --low\ 5-95]
+.RB [-L\ --very-low\ 5-95]
+.RB [-c\ --critical\ 5-95]
+.RB [-r\ --refresh-rate\ <seconds>]
+.RB [-v\ --verbose]
+.SH DESCRIPTIOR
+pumopm is a simple, small, no bloat power manager written by Phundrak in
+an attempt to create a power manager that is small, simple, and does
+exactly what he wants to do: warn about low, very low, and critical
+battery levels before suspending the computer.
+.SH FLAGS
+.TP
+.B \-h \-\-help
+Prints help information
+.TP
+.B \-v \-\-verbose
+Prints verbose information
+.TP
+.B \-V \-\-version
+Prints version information
+.SH OPTIONS
+.TP
+.B \-l \-\-low <value>
+Level at which the battery is considered to be low. Value between 5 and
+95. Default 25
+.TP
+.B \-L \-\-very-low <value>
+level at which the battery is considered to be very low. Value between 5
+and 95. Default 15
+.TP
+.B \-c \-\-critical <value>
+level at which the battery is considered to be critical. Value between 5
+and 95. Default 10
+.TP
+.B \-r \-\-refresh-rate <value>
+refresh rate of the battery’s reads in seconds. Default 5
+.SH BUGS
+Although I try to hunt for bugs, but if you ever find one, please do not
+hesitate reporting it at lucien@phundrak.com or on
+https://labs.phundrak.com/phundrak/pumopm or
+https://github.com/Phundrak/pumopm/
