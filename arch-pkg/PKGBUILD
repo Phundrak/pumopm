@@ -1,6 +1,6 @@
 # Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
-pkgname=pumopm
-pkgver=0.1.1
+pkgname=pumopm-git
+pkgver=0.1.1.r1.g4fd33bf
 pkgrel=3
 pkgdesc="A tiny power manager written in Rust"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -9,8 +9,16 @@ license=('GPL3')
 depends=()
 makedepends=('rustup' 'git')
 options=('strip' 'zipman')
-source=("$pkgname::https://labs.phundrak.com/phundrak/pumopm/archive/$pkgver.tar.gz")
-md5sums=('347a95efacdbf9f8ab3b2da6a7eff6cc')
+source=("$pkgname::git+https://labs.phundrak.com/phundrak/pumopm.git#branch=develop")
+md5sums=('SKIP')
+# If Phundrak’s Gitea takes too long to answer, or if it is down, use the
+# Github mirror
+# source=("$pkgname}::git+https://github.com/Phundrak/pumopm.git#branch=develop")
+
+pkgver() {
+	cd "$pkgname"
+  git describe --tags --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
 
 build() {
   cd "$pkgname"
@@ -25,13 +33,9 @@ build() {
 
 package() {
   cd "$pkgname"
-  echo EXE
   install -Dm755 "target/release/pumopm" "$pkgdir/usr/bin/pumopm"
-  echo LICENSE
   install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/${pkgname}/LICENSE"
-  echo MAN
   install -Dm644 "pumopm.1" "$pkgdir/usr/share/man/man1/pumopm.1"
-  echo SERVCE
   install -Dm644 "pumopm.service" "$pkgdir/usr/lib/systemd/system/pumopm.service"
 }
 
